@@ -1,55 +1,72 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/left_draw"
+        android:id="@+id/main_contents"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="#f29249">
+
+
+        <view
+            android:id="@+id/toolbar_view"
+            class="android.support.v7.widget.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#f29249">
+
+
+        </view>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="open"
                 android:layout_weight="2"
-                android:background="@drawable/icon1" />
+                android:background="@drawable/icon1"
+                android:onClick="open" />
 
             <Button
                 android:id="@+id/button1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="gallery"
                 android:layout_weight="2"
-                android:background="@drawable/icon2" />
+                android:background="@drawable/icon2"
+                android:onClick="gallery" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="animation"
                 android:layout_weight="2"
-                android:background="@drawable/icon3" />
+                android:background="@drawable/icon3"
+                android:onClick="animation" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/textView6"
+            android:background="#f29249"
+            android:textColor="#FFFFFF" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="15">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Animation"
-                android:layout_gravity="left|center_vertical" />
+            android:layout_weight="15"
+            android:id="@+id/frameLayout"
+            android:background="#fff">
 
             <ImageView
                 android:id="@+id/imageView1"
@@ -64,46 +81,21 @@
                 android:scaleType="matrix" />
 
         </FrameLayout>
+
     </LinearLayout>
 
     <!-- The navigation drawer -->
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
+        android:layout_width="320dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:background="#333" >
+        android:layout_gravity="left">
 
-        <LinearLayout
+        <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            layout="@layout/view_navigationdrawer" />
 
-            <Button
-                android:id="@+id/drawer_button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:onClick="enpitu"
-                android:text="鉛筆"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:onClick="nuritubu"
-                android:text="塗りつぶし"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:onClick="keshigomu"
-                android:text="消しゴム"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
