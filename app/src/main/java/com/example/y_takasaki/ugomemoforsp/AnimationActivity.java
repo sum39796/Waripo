@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -49,7 +48,6 @@ public class AnimationActivity extends Activity {
         cursor.moveToFirst();
         String path = cursor.getString(0);
         cursor.close();
-        Log.d("GalleryAcitivity getPath()", path);
         return path;
     }
 

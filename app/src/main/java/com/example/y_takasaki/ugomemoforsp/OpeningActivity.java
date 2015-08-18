@@ -14,26 +14,42 @@ import java.io.File;
  */
 public class OpeningActivity extends Activity {
     SharedPreferences prefs;
-    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opening);
-        prefs=getSharedPreferences("ProjectPreferences",MODE_PRIVATE);
+        prefs = getSharedPreferences(PreferencesKeys.PREF_KEY_PROJECT, MODE_PRIVATE);
+
+        File directory = new File(Environment.getExternalStorageDirectory(), "UMProjects");
+
+        if (directory.exists() == false) {
+            directory.mkdir();
+        }
     }
 
-    public void make(View v){
+    public void make(View v) {
 
-        int UMPJNumber=prefs.getInt("UMPJNumber", 1);
-        File makeDir = new File(Environment.getExternalStorageDirectory(), "UMproject"+UMPJNumber);
-        if (makeDir.exists() == false) {
-            makeDir.mkdir();
+        int UMPJNumber = prefs.getInt(PreferencesKeys.PREF_KEY_NUMBER, 1);
+        File directory = new File(Environment.getExternalStorageDirectory(), "UMProjects/UMP-" + UMPJNumber);
+
+        if (directory.exists() == false) {
+            directory.mkdir();
             Intent intent = new Intent(this, CanvasActivity.class);
             startActivity(intent);
         }
-        editor = prefs.edit();
-        editor.putInt("UMPJNumber",UMPJNumber+1);
-        editor.commit();
+
+        prefs.edit()
+                // UMPJNumber を更新する
+                .putInt(PreferencesKeys.PREF_KEY_NUMBER, UMPJNumber + 1)
+                // 保存する
+                .commit();
+    }
+
+    public void see(View v) {
+        Intent intent = new Intent(this, WatchListActivity.class);
+        startActivity(intent);
+
     }
 
 }

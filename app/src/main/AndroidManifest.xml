@@ -38,6 +38,11 @@
             android:label="@string/app_name" >
 
         </activity>
+        <activity
+            android:name=".WatchListActivity"
+            android:label="@string/app_name" >
+
+        </activity>
     </application>
 
 </manifest>
