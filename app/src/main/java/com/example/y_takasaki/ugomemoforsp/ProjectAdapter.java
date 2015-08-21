@@ -16,10 +16,10 @@ import java.util.List;
  */
 
 
-public class FileAdapter extends ArrayAdapter<File> {
+public class ProjectAdapter extends ArrayAdapter<File> {
 
-    public FileAdapter(Context context, List<File> objects) {
-        super(context, R.layout.customdata, objects);
+    public ProjectAdapter(Context context, List<File> objects) {
+        super(context, R.layout.item_project, objects);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class FileAdapter extends ArrayAdapter<File> {
         if (null == convertView) {
             // CustomDataのデータをViewの各Widgetにセットする
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.customdata, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_project, null);
             viewHolder.iamgeView = (ImageView)convertView.findViewById(R.id.image);
             viewHolder.nameView = (TextView)convertView.findViewById(R.id.text);
             convertView.setTag(viewHolder);
@@ -40,7 +40,7 @@ public class FileAdapter extends ArrayAdapter<File> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.iamgeView.setImageResource(R.drawable.icon1);
+        viewHolder.iamgeView.setImageResource(R.drawable.icon23);
         if(item.isDirectory()) {
             viewHolder.nameView.setText(item.getName() + "/");
         } else {

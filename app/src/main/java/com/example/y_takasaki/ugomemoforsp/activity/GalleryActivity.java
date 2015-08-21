@@ -1,19 +1,29 @@
-package com.example.y_takasaki.ugomemoforsp;
+package com.example.y_takasaki.ugomemoforsp.activity;
 
 /**
  * Created by Y-Takasaki on 15/02/21.
  */
+
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.ContentUris;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.y_takasaki.ugomemoforsp.GalleryImage;
+import com.example.y_takasaki.ugomemoforsp.R;
+import com.example.y_takasaki.ugomemoforsp.SelAdapter;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +31,8 @@ public class GalleryActivity extends Activity {
 
     private GridView mGridView;
     private SelAdapter mAdapter;
+
+    private String mPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +43,22 @@ public class GalleryActivity extends Activity {
         mAdapter = new SelAdapter(this, new ArrayList<GalleryImage>() );
         mGridView.setAdapter(mAdapter);
 
-        //getGalleryImageUris(MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        Intent intent = getIntent();
+        mPath = intent.getStringExtra("path");
+
         getGalleryImageUris(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GalleryImage item = mAdapter.getItem(position);
+                Intent intent = new Intent(GalleryActivity.this, CanvasActivity.class);
+                //intent.setData(Uri.fromFile(item.file));
+                intent.putExtra("load_file", Uri.fromFile(item.file).toString());
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override
@@ -44,7 +70,29 @@ public class GalleryActivity extends Activity {
     private void getGalleryImageUris(Uri uriType) {
         List<GalleryImage> gallaryImages = new ArrayList<GalleryImage>();
         //�ｽ�ｽ�ｽR�ｽ[�ｽh�ｽﾌ取得
-        Cursor cursor = managedQuery(uriType, null, null, null, null);
+        if(TextUtils.isEmpty(mPath)) return;
+        File[] filelist = new File(mPath).listFiles();
+        if (filelist != null) {
+            Log.d(getClass().getSimpleName(), "File List Length:" + filelist.length);
+        }
+        List<Bitmap> imageList = new ArrayList<>();
+
+        for(File file : filelist) {
+            if(file.getName().contains(".png")) {
+                GalleryImage galleryImage = new GalleryImage();
+                // 画像の場所
+                //galleryImage.uri = ContentUris.withAppendedId(uriType, id);
+                galleryImage.uri = Uri.fromFile(file);
+                galleryImage.file = file;
+                // id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+                // 画像のBitmapデータ
+//                galleryImage.thumnailBitmap = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), id, MediaStore.Images.Thumbnails.MINI_KIND, null);
+                gallaryImages.add(galleryImage);
+            }
+        }
+        mAdapter.addAll(gallaryImages);
+
+        /*Cursor cursor = managedQuery(uriType, null, null, null, null);
         cursor.moveToFirst();
         int fieldIndex;
         Long id;
@@ -56,13 +104,15 @@ public class GalleryActivity extends Activity {
             if( getPath(ContentUris.withAppendedId(uriType, id)).contains(AppConfig.APPNAME) ) {
                 //ID�ｽ�ｽ�ｽ�ｽURI�ｽ�ｽ�ｽ謫ｾ
                 GalleryImage galleryImage = new GalleryImage();
+                // 画像の場所
                 galleryImage.uri = ContentUris.withAppendedId(uriType, id);
                 id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+                // 画像のBitmapデータ
                 galleryImage.thumnailBitmap = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), id, MediaStore.Images.Thumbnails.MINI_KIND, null);
                 gallaryImages.add(galleryImage);
             }
         }
-        mAdapter.addContents(gallaryImages);
+        mAdapter.addContents(gallaryImages);*/
     }
 
     /**
@@ -77,8 +127,6 @@ public class GalleryActivity extends Activity {
         cursor.moveToFirst();
         String path = cursor.getString(0);
         cursor.close();
-        Log.d("GalleryAcitivity getPath()", uri.toString());
-        Log.d("GalleryAcitivity getPath()", path);
         return path;
     }
 

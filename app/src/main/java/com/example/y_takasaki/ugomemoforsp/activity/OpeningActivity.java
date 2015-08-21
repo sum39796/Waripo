@@ -1,4 +1,4 @@
-package com.example.y_takasaki.ugomemoforsp;
+package com.example.y_takasaki.ugomemoforsp.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+
+import com.example.y_takasaki.ugomemoforsp.PreferencesKeys;
+import com.example.y_takasaki.ugomemoforsp.R;
 
 import java.io.File;
 

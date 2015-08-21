@@ -29,7 +29,7 @@ public class CustomAdapter extends ArrayAdapter<CustomData> {
 
         // convertViewは使い回しされている可能性があるのでnullの時だけ新しく作る
         if (null == convertView) {
-            convertView = layoutInflater_.inflate(R.layout.customdata, null);
+            convertView = layoutInflater_.inflate(R.layout.item_project, null);
         }
 
         // CustomDataのデータをViewの各Widgetにセットする

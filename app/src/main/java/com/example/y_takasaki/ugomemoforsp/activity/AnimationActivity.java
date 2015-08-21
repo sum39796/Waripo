@@ -1,4 +1,4 @@
-package com.example.y_takasaki.ugomemoforsp;
+package com.example.y_takasaki.ugomemoforsp.activity;
 
 /**
  * Created by Y-Takasaki on 15/02/21.
@@ -12,6 +12,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
+import com.example.y_takasaki.ugomemoforsp.AnimationImageView;
+import com.example.y_takasaki.ugomemoforsp.MyAsyncTask;
+import com.example.y_takasaki.ugomemoforsp.R;
 
 import java.util.ArrayList;
 

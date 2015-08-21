@@ -1,4 +1,4 @@
-package com.example.y_takasaki.ugomemoforsp;
+package com.example.y_takasaki.ugomemoforsp.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -35,6 +36,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.y_takasaki.ugomemoforsp.AppConfig;
+import com.example.y_takasaki.ugomemoforsp.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -146,6 +150,28 @@ public class CanvasActivity extends ActionBarActivity {
 
         mTextView.setText("レイヤー1");
 
+        Intent intent = getIntent();
+        // ロードするファイルが会った場合に画像をロードする
+        String loadFile = intent.getStringExtra("load_file");
+        if (!TextUtils.isEmpty(loadFile)) {
+            Log.d("load_file", loadFile);
+            Uri uri = Uri.parse(loadFile);            // 存在チェックのためのFile。
+            try {
+                Log.d("onActivityResult", uri.toString());
+                mBitmap[selectLayer] = loadImage(uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mCanvas[selectLayer] = new Canvas(mBitmap[selectLayer]);
+            mImageView[selectLayer].setImageBitmap(mBitmap[selectLayer]);
+        }
+        /*if (intent.getData() != null) {
+            try {
+                loadImage(intent.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 
     @Override
@@ -339,6 +365,7 @@ public class CanvasActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Uri uri = data.getData();
         try {
+            Log.d("onActivityResult", uri.toString());
             mBitmap[selectLayer] = loadImage(uri);
         } catch (IOException e) {
             e.printStackTrace();
@@ -373,7 +400,7 @@ public class CanvasActivity extends ActionBarActivity {
             bm = Bitmap.createBitmap(bm, 0, 0,
                     bm.getWidth(), bm.getHeight(), matrix, false);
         }
-        bm = Bitmap.createScaledBitmap(bm, (int) (width), (int) (width * (((double) oh) / ((double) ow))), false);
+        bm = Bitmap.createScaledBitmap(bm, (width), (int) (width * (((double) oh) / ((double) ow))), false);
         Bitmap offBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas offCanvas = new Canvas(offBitmap);
         offCanvas.drawBitmap(bm, 0, (height - bm.getHeight()) / 2, null);
@@ -387,18 +414,8 @@ public class CanvasActivity extends ActionBarActivity {
         File file = null;
         DecimalFormat form = new DecimalFormat("0000");
 
-        SharedPreferences argprefs = getSharedPreferences("ProjectPreferences", MODE_PRIVATE);
-
-        //SDに書き込む
-        String dirPath = AppConfig.getDirPath(argprefs);
-        File outDir = new File(dirPath);
-        if (!outDir.exists()) {
-            outDir.mkdir();
-            Log.d("call", "outDir.mkdir()");
-        }
-
         do {
-            file = new File(AppConfig.getFilePath(imageNumber, argprefs));
+            file = new File(AppConfig.getFilePath(this, imageNumber));
             //imageNumber++;
         } while (file.exists());
         if (writeImage(file)) {
