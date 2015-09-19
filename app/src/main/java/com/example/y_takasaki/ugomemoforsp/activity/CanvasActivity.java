@@ -162,6 +162,7 @@ public class CanvasActivity extends ActionBarActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            mCanvas[selectLayer].translate(200, -100);
             mCanvas[selectLayer] = new Canvas(mBitmap[selectLayer]);
             mImageView[selectLayer].setImageBitmap(mBitmap[selectLayer]);
         }
